@@ -1,0 +1,5 @@
+/.vs
+/VerifonePayment.Lib/bin
+/VerifonePayment.Lib/obj
+/VerifonePayment.Test/bin
+/VerifonePayment.Test/obj
