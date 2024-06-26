@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using VerifonePayment.Lib.Models;
 using VerifoneSdk;
+using static VerifonePayment.Lib.Enums;
 
 namespace VerifonePayment.Lib
 {
@@ -200,12 +201,12 @@ namespace VerifonePayment.Lib
         /// Payment transaction.
         /// </summary>
         /// <param name="total">The total amount.</param>
-        public void PaymentTransaction(long total)
+        public void PaymentTransaction(long total, Enums.PaymentType paymentType = Enums.PaymentType.CREDIT, int scale = 2)
         {
             var payment = Payment.Create();
             payment.RequestedAmounts = payment_sdk_.TransactionManager.BasketManager.CurrentAmountTotals;
-            payment.RequestedAmounts.Total = new VerifoneSdk.Decimal(total);
-            payment.PaymentType = PaymentType.CREDIT;
+            payment.RequestedAmounts.Total = new VerifoneSdk.Decimal(scale, total);
+            payment.PaymentType = (VerifoneSdk.PaymentType?)paymentType;
 
             payment_sdk_.TransactionManager.StartPayment(payment);
         }
