@@ -55,5 +55,44 @@
             /// </summary>
             STATUS_ERROR = 10
         }
+
+        /// <summary>
+        /// Enumerations for the different types of payment that can be received from the Verifone device.
+        /// </summary>
+        public enum PaymentType
+        {
+            /// <summary>
+            /// Cash payment.
+            /// </summary>
+            CASH,
+            /// <summary>
+            /// Credit payment.
+            /// </summary>
+            CREDIT,
+            /// <summary>
+            /// Debit payment.
+            /// </summary>
+            DEBIT,
+            /// <summary>
+            /// Stored value payment.
+            /// </summary>
+            STORED_VALUE,
+            /// <summary>
+            /// EBT payment.
+            /// </summary>
+            EBT,
+            /// <summary>
+            /// Alternate type payment.
+            /// </summary>
+            ALTERNATE_TYPE,
+            /// <summary>
+            /// Check payment.
+            /// </summary>
+            CHECK,
+            /// <summary>
+            /// Mobile payment.
+            /// </summary>
+            MOBILE
+        }
     }
 }

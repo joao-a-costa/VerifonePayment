@@ -8,6 +8,7 @@ namespace VerifonePayment.Test
         #region "Events"
 
         private static ManualResetEvent statusEventReceived = new ManualResetEvent(false);
+        private static ManualResetEvent loginEventReceived = new ManualResetEvent(false);
         private static ManualResetEvent startSessionStatusEventReceived = new ManualResetEvent(false);
         private static ManualResetEvent basketEventStatusEventReceived = new ManualResetEvent(false);
         private static ManualResetEvent paymentCompletedEventReceived = new ManualResetEvent(false);
@@ -52,7 +53,7 @@ namespace VerifonePayment.Test
 
                         case "2":
                             verifonePayment.LoginWithCredentials();
-                            WaitForEvent(statusEventReceived, "LoginWithCredentials");
+                            WaitForEvent(loginEventReceived, "LoginWithCredentials");
                             break;
 
                         case "3":
@@ -76,7 +77,7 @@ namespace VerifonePayment.Test
                             break;
                         case "7":
                             verifonePayment.TearDown();
-                            WaitForEvent(statusEventReceived, "EndSession");
+                            WaitForEvent(statusEventReceived, "TearDown");
                             break;
 
                         case "8":
@@ -132,12 +133,21 @@ namespace VerifonePayment.Test
         {
             Console.WriteLine($"   - Status: {e.Status}, Type: {e.Type}, Message: {e.Message}");
 
-            if (e.Type == Lib.Enums.EventType.SESSION_STARTED)
+            if (e.Type == Lib.Enums.EventType.SESSION_STARTED && e.Status == "0")
+            {
                 startSessionStatusEventReceived.Set();
-            if (e.Type == Lib.Enums.EventType.SESSION_ENDED)
+            }
+            if (e.Type == Lib.Enums.EventType.SESSION_ENDED && e.Status == "0")
+            {
                 statusEventReceived.Set();
-            if (e.Type == Lib.Enums.EventType.LOGIN_COMPLETED && e.Status == "-20")
-                statusEventReceived.Set();
+            }
+            if (e.Type == Lib.Enums.EventType.LOGIN_COMPLETED)
+            {
+                loginEventReceived.Set();
+
+                if (e.Status == "-20")
+                    statusEventReceived.Set();
+            }
         }
 
         /// <summary>
