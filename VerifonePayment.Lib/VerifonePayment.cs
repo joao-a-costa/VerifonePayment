@@ -75,6 +75,7 @@ namespace VerifonePayment.Lib
 
         public string LogFile { get; set; }
         public string IpAddress { get; set; }
+        public bool DeleteLogFile { get; set; } = false;
 
         #endregion
 
@@ -103,7 +104,7 @@ namespace VerifonePayment.Lib
             {
                 var logFile = Path.Combine(Path.GetTempPath(), _defaultLogFile);
 
-                if (File.Exists(logFile))
+                if (DeleteLogFile && File.Exists(logFile))
                     File.Delete(logFile);
 
                 LogFile = Path.Combine(Path.GetTempPath(), _defaultLogFile);
