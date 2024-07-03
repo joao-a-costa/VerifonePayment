@@ -13,56 +13,98 @@ namespace VerifonePayment.Lib
 
         #region "Verifone"
 
+        /// <summary>
+        /// Constant for device address key.
+        /// </summary>
         private const string _DEVICE_ADDRESS_KEY = "DEVICE_ADDRESS_KEY";
+        /// <summary>
+        /// Constant for device connection type key.
+        /// </summary>
         private const string _DEVICE_CONNECTION_TYPE_KEY = "DEVICE_CONNECTION_TYPE_KEY";
+        /// <summary>
+        /// Constant for device connection type key value.
+        /// </summary>
         private const string _DEVICE_CONNECTION_TYPE_KEY_VALUE = "tcpip";
 
         #endregion
 
+        /// <summary>
+        /// Default log file.
+        /// </summary>
         private const string _defaultLogFile = "psdk.log";
+        /// <summary>
+        /// Constant for ip address empty.
+        /// </summary>
         private const string _TextIpAddressEmpty = "Ip address empty";
 
         #endregion
 
         #region "Members"
 
-        private PaymentSdk payment_sdk_ = new PaymentSdk();
-        private VerifonePaymentListener listener_ = new VerifonePaymentListener();
+        /// <summary>
+        /// Payment SDK.
+        /// </summary>
+        private readonly PaymentSdk payment_sdk_ = new PaymentSdk();
+        /// <summary>
+        /// Listener.
+        /// </summary>
+        private readonly VerifonePaymentListener listener_ = new VerifonePaymentListener();
 
         #endregion
 
         #region "Events"
 
+        /// <summary>
+        /// Event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> StatusEventOccurred
         {
             add { listener_.StatusEventOccurred += value; }
             remove { listener_.StatusEventOccurred -= value; }
         }
+        /// <summary>
+        /// Transaction event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> TransactionEventOccurred
         {
             add { listener_.TransactionEventOccurred += value; }
             remove { listener_.TransactionEventOccurred -= value; }
         }
+        /// <summary>
+        /// Device vitals information event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> DeviceVitalsInformationEventOccurred
         {
             add { listener_.DeviceVitalsInformationEventOccurred += value; }
             remove { listener_.DeviceVitalsInformationEventOccurred -= value; }
         }
+        /// <summary>
+        /// Basket event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> BasketEventOccurred
         {
             add { listener_.BasketEventOccurred += value; }
             remove { listener_.BasketEventOccurred -= value; }
         }
+        /// <summary>
+        /// Notification event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> NotificationEventOccurred
         {
             add { listener_.NotificationEventOccurred += value; }
             remove { listener_.NotificationEventOccurred -= value; }
         }
+        /// <summary>
+        /// Payment completed event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> PaymentCompletedEventOccurred
         {
             add { listener_.PaymentCompletedEventOccurred += value; }
             remove { listener_.PaymentCompletedEventOccurred -= value; }
         }
+        /// <summary>
+        /// Commerce event occurred.
+        /// </summary>
         public event EventHandler<PaymentEventArgs> CommerceEventOccurred
         {
             add { listener_.CommerceEventOccurred += value; }
@@ -73,8 +115,17 @@ namespace VerifonePayment.Lib
 
         #region "Properties"
 
+        /// <summary>
+        /// Log file.
+        /// </summary>
         public string LogFile { get; set; }
+        /// <summary>
+        /// Ip address.
+        /// </summary>
         public string IpAddress { get; set; }
+        /// <summary>
+        /// Delete log file.
+        /// </summary>
         public bool DeleteLogFile { get; set; } = false;
 
         #endregion
