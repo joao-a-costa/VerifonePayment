@@ -19,7 +19,7 @@ namespace VerifonePayment.Test
         {
             try
             {
-                var verifonePayment = new Lib.VerifonePayment("192.168.80.51");
+                var verifonePayment = new Lib.VerifonePayment("192.168.40.173");
 
                 // Subscribe to the event
                 verifonePayment.StatusEventOccurred += VerifonePayment_StatusEventOccurred;
@@ -40,9 +40,10 @@ namespace VerifonePayment.Test
                     Console.WriteLine("3. StartSession");
                     Console.WriteLine("4. AddMerchandise");
                     Console.WriteLine("5. PaymentTransaction");
-                    Console.WriteLine("6. EndSession");
-                    Console.WriteLine("7. TearDown");
-                    Console.WriteLine("8. Exit");
+                    Console.WriteLine("6. RemoveMerchandise");
+                    Console.WriteLine("7. EndSession");
+                    Console.WriteLine("8. TearDown");
+                    Console.WriteLine("9. Exit");
 
                     switch (Console.ReadLine())
                     {
@@ -72,15 +73,20 @@ namespace VerifonePayment.Test
                             break;
 
                         case "6":
+                            verifonePayment.RemoveMerchandise();
+                            WaitForEvent(basketEventStatusEventReceived, "RemoveMerchandise");
+                            break;
+
+                        case "7":
                             verifonePayment.EndSession();
                             WaitForEvent(statusEventReceived, "EndSession");
                             break;
-                        case "7":
+                        case "8":
                             verifonePayment.TearDown();
                             WaitForEvent(statusEventReceived, "TearDown");
                             break;
 
-                        case "8":
+                        case "9":
                             running = false;
                             break;
 

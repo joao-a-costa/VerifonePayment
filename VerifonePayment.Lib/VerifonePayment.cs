@@ -250,6 +250,33 @@ namespace VerifonePayment.Lib
         }
 
         /// <summary>
+        /// Remove merchandise.
+        /// </summary>
+        public void RemoveMerchandise()
+        {
+            var basket_manager = payment_sdk_.TransactionManager.BasketManager;
+            var basket = basket_manager.Basket;
+            IList<Merchandise> merchandise_list = new List<Merchandise>();
+            if (basket != null)
+            {
+                merchandise_list = basket.Merchandise;
+            }
+            if (merchandise_list.Count > 0)
+            {
+                var merchandise = merchandise_list[merchandise_list.Count - 1];
+                var amount = merchandise.Amount;
+                var amount_totals = basket_manager.CurrentAmountTotals;
+                if (amount_totals != null)
+                {
+                    amount_totals.SubtractAmounts(amount, new VerifoneSdk.Decimal(0), new VerifoneSdk.Decimal(0),
+                       new VerifoneSdk.Decimal(0), new VerifoneSdk.Decimal(0), new VerifoneSdk.Decimal(0), amount);
+                    var removed = new List<Merchandise>(); removed.Add(merchandise);
+                    basket_manager.RemoveMerchandise(removed, amount_totals);
+                }
+            }
+        }
+
+        /// <summary>
         /// Payment transaction.
         /// </summary>
         /// <param name="total">The total amount.</param>
