@@ -1,7 +1,9 @@
 ﻿using System;
+using VerifonePayment.Lib.Controllers;
 using VerifonePayment.Lib.Models;
 using VerifoneSdk;
 using static VerifonePayment.Lib.Enums;
+using VerifonePayment.Lib.Models;
 
 namespace VerifonePayment.Lib
 {
@@ -105,12 +107,12 @@ namespace VerifonePayment.Lib
         /// <param name="type">The type</param>
         /// <param name="message">The message</param>
         /// <exception cref="ArgumentException">Thrown when the event type is invalid</exception>
-        private void RaiseEvent(EventHandler<PaymentEventArgs> eventHandler, string status, string type, string message)
+        private void RaiseEvent(EventHandler<PaymentEventArgs> eventHandler, string status, string type, string message, object extraData = null)
         {
             if (!Enum.TryParse(type, out EventType eventType))
                 throw new ArgumentException($"Invalid event type: {type}");
 
-            eventHandler?.Invoke(this, new PaymentEventArgs { Status = status, Type = eventType, Message = message });
+            eventHandler?.Invoke(this, new PaymentEventArgs { Status = status, Type = eventType, Message = message, ExtraData = extraData });
         }
 
         #endregion
@@ -243,10 +245,18 @@ namespace VerifonePayment.Lib
         /// <param name="sdk_event">The event</param>
         public override void HandlePaymentCompletedEvent(PaymentCompletedEvent sdk_event)
         {
+            var jsonReceipt = Newtonsoft.Json.JsonConvert.SerializeObject(sdk_event.Receipt);
+            var jsonPayment = Newtonsoft.Json.JsonConvert.SerializeObject(sdk_event.Payment);
             string type = sdk_event.Type == null ? "(null)" : sdk_event.Type.ToString();
             string status = sdk_event.Status.ToString();
             string message = sdk_event.Message == null ? "(null)" : sdk_event.Message.ToString();
-            RaiseEvent(PaymentCompletedEventOccurred, status, type, message);
+
+            var mapper = new RepositoriesMappingProfileController().Configuration.CreateMapper();
+            //var receiptObject = mapper.Map<Models.Receipt>(sdk_event.Receipt);
+            var paymentObject = mapper.Map<Models.Payment>(sdk_event.Payment);
+
+            RaiseEvent(PaymentCompletedEventOccurred, status, type, message,
+                extraData: paymentObject);
         }
 
         /// <summary>

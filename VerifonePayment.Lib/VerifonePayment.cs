@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using VerifonePayment.Lib.Controllers;
 using VerifonePayment.Lib.Models;
 using VerifoneSdk;
-using static VerifonePayment.Lib.Enums;
 
 namespace VerifonePayment.Lib
 {
@@ -282,12 +282,24 @@ namespace VerifonePayment.Lib
         /// <param name="total">The total amount.</param>
         public void PaymentTransaction(long total, Enums.PaymentType paymentType = Enums.PaymentType.CREDIT, int scale = 2)
         {
-            var payment = Payment.Create();
+            var payment = VerifoneSdk.Payment.Create();
             payment.RequestedAmounts = payment_sdk_.TransactionManager.BasketManager.CurrentAmountTotals;
             payment.RequestedAmounts.Total = new VerifoneSdk.Decimal(scale, total);
-            payment.PaymentType = (VerifoneSdk.PaymentType?)paymentType;
+            payment.PaymentType = (PaymentType?)paymentType;
 
             payment_sdk_.TransactionManager.StartPayment(payment);
+        }
+
+        /// <summary>
+        /// Refund transaction.
+        /// </summary>
+        /// <param name="payment">The payment to refund.</param>
+        public void RefundTransaction(Models.Payment payment)
+        {
+            var mapper = new RepositoriesMappingProfileController().Configuration.CreateMapper();
+            var paymentObject = mapper.Map<VerifoneSdk.Payment>(payment);
+
+            payment_sdk_.TransactionManager.ProcessRefund(paymentObject);
         }
 
         /// <summary>

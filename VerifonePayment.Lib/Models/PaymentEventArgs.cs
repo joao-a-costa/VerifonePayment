@@ -20,5 +20,6 @@ namespace VerifonePayment.Lib.Models
         /// Message of the event
         /// </summary>
         public string Message { get; set; }
+        public object ExtraData { get; set; }
     }
 }

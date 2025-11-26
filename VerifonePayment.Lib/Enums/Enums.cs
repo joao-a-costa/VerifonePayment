@@ -53,7 +53,11 @@
             /// <summary>
             /// Status error.
             /// </summary>
-            STATUS_ERROR = 10
+            STATUS_ERROR = 10,
+            /// <summary>
+            /// Transaction ended
+            /// </summary>
+            TRANSACTION_ENDED = 11
         }
 
         /// <summary>

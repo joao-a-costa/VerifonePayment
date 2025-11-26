@@ -4,3 +4,4 @@
 /VerifonePayment.Test/bin
 /VerifonePayment.Test/obj
 /VerifonePayment.Lib/nugetPackagePush.cmd
+/packages

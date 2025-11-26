@@ -51,6 +51,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PaymentSdk, Version=1.0.8404.25542, Culture=neutral, PublicKeyToken=3b37f45c0e1ae0b5, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dlls\PaymentSdk.dll</HintPath>
@@ -65,14 +71,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\FileName.cs" />
+    <Compile Include="Controllers\RepositoriesMappingProfileController.cs" />
     <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentEventArgs.cs" />
+    <Compile Include="Models\Receipt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VerifonePayment.cs" />
     <Compile Include="VerifonePaymentListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dlls\PaymentSdk.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

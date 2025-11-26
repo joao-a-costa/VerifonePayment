@@ -5,6 +5,8 @@ namespace VerifonePayment.Test
 {
     internal class Program
     {
+        private static object lastPayment = null;
+
         #region "Events"
 
         private static ManualResetEvent statusEventReceived = new ManualResetEvent(false);
@@ -40,10 +42,11 @@ namespace VerifonePayment.Test
                     Console.WriteLine("3. StartSession");
                     Console.WriteLine("4. AddMerchandise");
                     Console.WriteLine("5. PaymentTransaction");
-                    Console.WriteLine("6. RemoveMerchandise");
-                    Console.WriteLine("7. EndSession");
-                    Console.WriteLine("8. TearDown");
-                    Console.WriteLine("9. Exit");
+                    Console.WriteLine("6. RefundTransaction");
+                    Console.WriteLine("7. RemoveMerchandise");
+                    Console.WriteLine("8. EndSession");
+                    Console.WriteLine("9. TearDown");
+                    Console.WriteLine("10. Exit");
 
                     switch (Console.ReadLine())
                     {
@@ -73,20 +76,25 @@ namespace VerifonePayment.Test
                             break;
 
                         case "6":
+                            verifonePayment.RefundTransaction((Lib.Models.Payment)lastPayment);
+                            WaitForEvent(paymentCompletedEventReceived, "RefundTransaction");
+                            break;
+
+                        case "7":
                             verifonePayment.RemoveMerchandise();
                             WaitForEvent(basketEventStatusEventReceived, "RemoveMerchandise");
                             break;
 
-                        case "7":
+                        case "8":
                             verifonePayment.EndSession();
                             WaitForEvent(statusEventReceived, "EndSession");
                             break;
-                        case "8":
+                        case "9":
                             verifonePayment.TearDown();
                             WaitForEvent(statusEventReceived, "TearDown");
                             break;
 
-                        case "9":
+                        case "10":
                             running = false;
                             break;
 
@@ -197,6 +205,8 @@ namespace VerifonePayment.Test
         private static void VerifonePayment_PaymentCompletedEventOccurred(object sender, Lib.Models.PaymentEventArgs e)
         {
             Console.WriteLine($"   - Status: {e.Status}, Type: {e.Type}, Message: {e.Message}");
+
+            lastPayment = e?.ExtraData;
 
             if (e.Type == Lib.Enums.EventType.NOTIFICATION_EVENT && e.Message == "Transaction Completed")
                 paymentCompletedEventReceived.Set();
